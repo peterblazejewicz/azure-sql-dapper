@@ -4,14 +4,15 @@ using System.Data.SqlClient;
 using System.Data;
 using Dapper;
 using System.Collections.Generic;
+using AdventureWorks.App.Models;
+using Newtonsoft.Json;
 
 namespace AdventureWorks.App
 {
     public class Program
     {
 
-        public static IConfiguration Configuration { get; set; }
-        public static AzureSqlConfig AzureConfig { get; set; }
+
         public static void Main(string[] args)
         {
             var builder = new ConfigurationBuilder();
@@ -31,15 +32,23 @@ namespace AdventureWorks.App
             {
                 connection.Open();
                 Console.WriteLine($"ConnectionStatus: {connection.State}");
-				
+
                 if (connection.State == ConnectionState.Open)
                 {
+                    Console.WriteLine("Addresses");
                     IEnumerable<Address> addresses = connection.Query<Address>(@"SELECT TOP 6 * FROM SalesLT.Address;");
-
                     foreach (Address address in addresses)
                     {
-                        Console.WriteLine($"{address.AddressLine1}, {address.City}");
+                       Console.WriteLine(JsonConvert.SerializeObject(address, Formatting.Indented));
                     }
+
+                    Console.WriteLine("Products");
+                    var products = connection.Query<Product, ProductModel, Product>(@"SELECT TOP 5 * FROM SalesLT.Product INNER JOIN SalesLT.ProductModel ON SalesLT.Product.ProductModelId = SalesLT.ProductModel.ProductModelId;", (p, m) => { p.Model = m; return p; }, splitOn: "ProductModelId");
+                    foreach (Product product in products)
+                    {
+                        Console.WriteLine(JsonConvert.SerializeObject(product, Formatting.Indented));
+                    }
+
                 }
 
                 if (connection.State == ConnectionState.Open)
@@ -52,22 +61,9 @@ namespace AdventureWorks.App
             Console.WriteLine("Press any key to exit ...");
             Console.ReadKey();
         }
+
+        static IConfiguration Configuration { get; set; }
+        static AzureSqlConfig AzureConfig { get; set; }
     }
 
-    public class AzureSqlConfig
-    {
-        public string Server { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Database { get; set; }
-    }
-
-    public class Address
-    {
-
-        public int AddressID { get; set; }
-        public string AddressLine1 { get; set; }
-        public string City { get; set; }
-        public string CountryRegion { get; set; }
-    }
 }
