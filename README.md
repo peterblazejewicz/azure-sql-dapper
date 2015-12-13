@@ -3,6 +3,13 @@
 
 ## Running example
 
+```
+cd src/AdventureWorks.App
+dnu restore
+dnu build
+dnx run ...
+```
+
 ** IMPORTANT **
 Install `user-secret` tool:
 ```
