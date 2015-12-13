@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace AdventureWorks.App
 {
@@ -23,9 +22,15 @@ namespace AdventureWorks.App
 				Password = Configuration["Password"]
 			};
 			
-			string sqlConnectionString = $"Server=tcp:{AzureConfig.Server},1433;Database={AzureConfig.Database};User ID={AzureConfig.Username};Password={AzureConfig.Password};Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+			string sqlConnectionString = $"Server=tcp:{AzureConfig.Server},1433;Database={AzureConfig.Database};User ID={AzureConfig.Username};Password={AzureConfig.Password};Trusted_Connection=False;Encrypt=False;Connection Timeout=30;MultipleActiveResultSets=False;";
 			
 			Console.WriteLine($"Connection string: {sqlConnectionString}");
+			using(var connection = new SqlConnection(sqlConnectionString))
+			{
+				connection.Open();
+				Console.WriteLine($"Status: {connection.State}");
+				if(connection.State == ConnectionState.Open) connection.Close();
+			}
 			Console.WriteLine("Press any key to exit ...");
             Console.Read();
         }
