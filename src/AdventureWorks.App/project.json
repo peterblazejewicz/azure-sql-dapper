@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0-*",
+  "description": "AdventureWorks.App Console Application",
+  "userSecretsId": "aspnet5-AdventureWorks.App-c24e84ab-18e9-4fe7-b919-b98d7081445c",
+  "authors": [
+    ""
+  ],
+  "tags": [
+    ""
+  ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "tooling": {
+    "defaultNamespace": "AdventureWorks.App"
+  },
+  "dependencies": {
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
+    "Microsoft.Extensions.SecretManager": "1.0.0-rc1-final"
+  },
+  "commands": {
+    "run": "AdventureWorks.App"
+  },
+  "frameworks": {
+    "dnx451": {},
+    "dnxcore50": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Console": "4.0.0-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    }
+  }
+}
