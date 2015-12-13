@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
-    "Microsoft.Extensions.SecretManager": "1.0.0-rc1-final"
+    "Microsoft.Extensions.SecretManager": "1.0.0-rc1-final",
+    "Dapper": "1.50.0-beta5"
   },
   "commands": {
     "run": "AdventureWorks.App"
