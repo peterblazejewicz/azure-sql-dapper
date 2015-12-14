@@ -1,6 +1,6 @@
 namespace AdventureWorks.App
 {
-    public class AzureSqlConfig
+    public class AzureOptions
     {
         public string Server { get; set; }
         public string Username { get; set; }

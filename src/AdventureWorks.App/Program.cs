@@ -12,27 +12,26 @@ namespace AdventureWorks.App
 {
     public class Program
     {
-        private IApplicationEnvironment Environment { get; set; }
+        private static IApplicationEnvironment env { get; set; }
         public Program()
         {
-            Environment = PlatformServices.Default.Application;
+            env = PlatformServices.Default.Application;
         }
 
         public static void Main(string[] args)
         {
             var builder = new ConfigurationBuilder();
-            builder.AddUserSecrets();
             builder.AddJsonFile("appsettings.json");
             builder.AddEnvironmentVariables();
+            builder.AddUserSecrets();
             Configuration = builder.Build();
-            AzureConfig = new AzureSqlConfig
+            AzureConfig = new AzureOptions
             {
-                Server = Configuration["Server"],
-                Database = Configuration["Database"],
-                Username = Configuration["Username"],
-                Password = Configuration["Password"]
+                Server = Configuration["Azure:Server"],
+                Database = Configuration["Azure:Database"],
+                Username = Configuration["Azure:Username"],
+                Password = Configuration["Azure:Password"]
             };
-
             string sqlConnectionString = $@"Server=tcp:{AzureConfig.Server},1433;
 							Database={AzureConfig.Database};
 							User ID={AzureConfig.Username};
@@ -81,7 +80,7 @@ namespace AdventureWorks.App
         }
 
         static IConfiguration Configuration { get; set; }
-        static AzureSqlConfig AzureConfig { get; set; }
+        static AzureOptions AzureConfig { get; set; }
     }
 
 }
