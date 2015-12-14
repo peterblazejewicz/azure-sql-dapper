@@ -31,10 +31,10 @@ http://docs.asp.net/en/latest/security/app-secrets.html
 On your Azure port SQL database settings open connection string and set configuration based on them:
 
 ```
-user-secret set server {your_server}
-user-secret set database {your_database}
-user-secret set username {your_username}
-user-secret set password {your_password}
+user-secret set Azure:Server {your_server}
+user-secret set Azure:Database {your_database}
+user-secret set Azure:Username {your_username}
+user-secret set Azure:Password {your_password}
 ```
 
 Verify:
@@ -42,10 +42,10 @@ Verify:
 user-secret list
 
 ➜  AdventureWorks.App  user-secret list
-info: username = ############
-info: password = #################
-info: server = ###########
-info: database = AdventureWorks
+info: Azure:Username = ############
+info: Azure:Password = #################
+info: Azure:Server = ###########
+info: Azure:Database = AdventureWorks
 ```
 
 ## Simple mapping
