@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.PlatformAbstractions;
 using System.Data.SqlClient;
 using System.Data;
 using Dapper;
@@ -11,12 +12,18 @@ namespace AdventureWorks.App
 {
     public class Program
     {
-
+        private IApplicationEnvironment Environment { get; set; }
+        public Program()
+        {
+            Environment = PlatformServices.Default.Application;
+        }
 
         public static void Main(string[] args)
         {
             var builder = new ConfigurationBuilder();
             builder.AddUserSecrets();
+            builder.AddJsonFile("appsettings.json");
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
             AzureConfig = new AzureSqlConfig
             {
