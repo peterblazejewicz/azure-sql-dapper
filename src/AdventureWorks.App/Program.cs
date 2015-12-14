@@ -48,22 +48,35 @@ namespace AdventureWorks.App
 
                 if (connection.State == ConnectionState.Open)
                 {
+                    Console.WriteLine("Nested sales records for Customer: multi select");
+                    
+                    var customerSql = @"SELECT * FROM SalesLT.Customer WHERE SalesLT.Customer.CustomerID = @CustomerID;";
+                    var salesSql = @"SELECT * FROM SalesLT.SalesOrderHeader WHERE
+                     SalesLT.SalesOrderHeader.CustomerID = @CustomerID ORDER BY 
+                     SalesLT.SalesOrderHeader.OrderDate ASC;";
+                    var multi = connection.QueryMultiple(customerSql + salesSql, new { CustomerId = 29485});
+                    var customer = multi.Read<Customer>().AsList()[0];
+                    customer.Sales = multi.Read<SalesOrderHeader>().AsList();
+                    Console.WriteLine(ToJsonString(customer));
+                    
                     Console.WriteLine("Addresses");
-                    IEnumerable<Address> addresses = connection.Query<Address>(@"SELECT TOP 6 * FROM SalesLT.Address;");
+                    
+                    IEnumerable<Address> addresses = connection.Query<Address>(@"SELECT TOP 1 * FROM SalesLT.Address;");
                     foreach (Address address in addresses)
                     {
-                        Console.WriteLine(JsonConvert.SerializeObject(address, Formatting.Indented));
+                        Console.WriteLine(ToJsonString(address));
                     }
 
                     Console.WriteLine("Products");
-                    var products = connection.Query<Product, ProductModel, Product>(@"SELECT TOP 5 * FROM SalesLT.Product 
+                    
+                    var products = connection.Query<Product, ProductModel, Product>(@"SELECT TOP 1 * FROM SalesLT.Product 
 						INNER JOIN SalesLT.ProductModel 
 						ON SalesLT.Product.ProductModelId = SalesLT.ProductModel.ProductModelId;",
                         (p, m) => { p.Model = m; return p; },
                         splitOn: "ProductModelId");
                     foreach (Product product in products)
                     {
-                        Console.WriteLine(JsonConvert.SerializeObject(product, Formatting.Indented));
+                        Console.WriteLine(ToJsonString(product));
                     }
 
                 }
@@ -77,6 +90,11 @@ namespace AdventureWorks.App
 
             Console.WriteLine("Press any key to exit ...");
             Console.ReadKey();
+        }
+        
+        static string ToJsonString(object obj) 
+        {
+             return JsonConvert.SerializeObject(obj, Formatting.Indented);   
         }
 
         static IConfiguration Configuration { get; set; }

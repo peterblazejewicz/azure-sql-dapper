@@ -78,6 +78,27 @@ Nested POCO:
 }
 ```
 
+A POCO with nested List of POCOs:
+```
+{
+  "CustomerID": 29485,
+  "Title": "Ms.",
+  "FirstName": "Catherine",
+  "LastName": "Abel",
+  "CompanyName": "Professional Sales and Service",
+  "EmailAddress": "catherine0@adventure-works.com",
+  "Sales": [
+    {
+      "SalesOrderID": 71782,
+      "CustomerID": 29485,
+      "OrderDate": "2008-06-01T00:00:00",
+      "SalesOrderNumber": "SO71782",
+      "rowguid": "f1be45a5-5c57-4a50-93c6-5f8be44cb7cb"
+    }
+  ]
+}
+```
+
 ## Author
 
 @peterblazejewicz
